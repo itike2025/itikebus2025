@@ -142,25 +142,107 @@ BUSTO = (
 
 
         
+# @python_2_unicode_compatible
+# class Bus(models.Model):
+    
+#     BUSTYPE = (
+#     ('--', '--'),
+#     ('TOYOTA COASTER', 'TOYOTA COASTER'),
+#     ('TOYOTA HIACE', 'TOYOTA HIACE'),
+#     ('BENZ BUS', 'BENZ BUS'),
+#     ('VOLVO BUS', 'VOLVO BUS'),
+#     ('HYUNDAI BUS','HYUNDAI BUS'),
+#     )
+	
+    
+	
+#     class Meta:
+#         verbose_name_plural = "Buses"
+#     id = models.AutoField(primary_key=True,)
+#     plate_number = models.CharField(max_length=20,unique=True)
+#     bus_company = models.ForeignKey(Company,on_delete=models.CASCADE)
+#     type_of_bus = models.CharField(max_length=255, choices=BUSTYPE)
+#     ticket_price = models.IntegerField()
+#     created = models.DateTimeField(auto_now_add=True)
+#     updated = models.DateTimeField(auto_now=True)
+#     departure_date = models.DateField(null=True)
+#     departure_time = models.TimeField(null=True)
+#     arrival_date = models.DateField(null=True)
+#     arrival_time = models.TimeField(null=True)
+#     #route = models.ForeignKey(Route,on_delete=models.CASCADE)
+#     location_from = models.CharField(max_length=255, choices=BUSFROM,default='KIGALI')
+#     location_to = models.CharField(max_length=255,choices=BUSTO,default='KIGALI')     
+#     seats = models.PositiveSmallIntegerField(default=1, verbose_name="Number of seats")
+#     #seatd = models.CharField(max_length=100,default=None,blank=True,null=True)
+#     #jseats = models.JSONField(default=None,blank=True,null=True)
+#     image = models.ImageField(upload_to='bus/%Y/%m/%d', blank=True)
+#     slug = models.SlugField()
+#     available = models.BooleanField(default=True)
+
+#     liked = models.ManyToManyField(User, related_name='liked',default=None,blank=True)
+#     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
+#     comments = GenericRelation(Comment)
+#     RATING_CHOICE = (
+#         ('1', gettext_noop('Worst')),
+#         ('2', gettext_noop('Bed')),
+#         ('3', gettext_noop('Average')),
+#         ('4', gettext_noop('Good')),
+#         ('5', gettext_noop('Best')),
+#     )
+#     ratings = models.CharField(
+#         blank=True, null=True, max_length=1, db_index=True, choices=RATING_CHOICE
+#     )
+    
+
+#     Tags = models.ManyToManyField(Tag,related_name='bus_details', blank=False)
+
+#     def __str__(self):
+#         return '{0}:{1}:{2}:{3}:{4}'.format(self.bus_company,self.type_of_bus,str(self.plate_number), self.route, self.departure_date)
+    
+#     class Meta:
+#         ordering = ('created',)
+#         verbose_name_plural = "buses"
+#         index_together = (('id', 'slug','location_from', 'location_to'),)
+
+
+#     def get_absolute_url(self):
+#         return reverse('bus_detail',args=[self.id, self.slug])
+
+#     #def __init__(self, *args, **kwargs):
+#     #    super().__init__(*args, **kwargs)
+#     #    if self.seatd:
+#     #        self.seatd= eval(self.seatd)
+
+#     def __str__(self):
+#         if self.location_from == self.location_to:
+#             raise ValidationError('To and From Can not be the same')
+#         return '{0} to {1}'.format(str(self.location_from), str(self.location_to))
+
+
+
 @python_2_unicode_compatible
 class Bus(models.Model):
-    
+
     BUSTYPE = (
-    ('--', '--'),
-    ('TOYOTA COASTER', 'TOYOTA COASTER'),
-    ('TOYOTA HIACE', 'TOYOTA HIACE'),
-    ('BENZ BUS', 'BENZ BUS'),
-    ('VOLVO BUS', 'VOLVO BUS'),
-    ('HYUNDAI BUS','HYUNDAI BUS'),
+        ('--', '--'),
+        ('TOYOTA COASTER', 'TOYOTA COASTER'),
+        ('TOYOTA HIACE', 'TOYOTA HIACE'),
+        ('BENZ BUS', 'BENZ BUS'),
+        ('VOLVO BUS', 'VOLVO BUS'),
+        ('HYUNDAI BUS','HYUNDAI BUS'),
     )
-	
-    
-	
-    class Meta:
-        verbose_name_plural = "Buses"
-    id = models.AutoField(primary_key=True,)
-    plate_number = models.CharField(max_length=20,unique=True)
-    bus_company = models.ForeignKey(Company,on_delete=models.CASCADE)
+
+    RATING_CHOICE = (
+        ('1', gettext_noop('Worst')),
+        ('2', gettext_noop('Bad')),
+        ('3', gettext_noop('Average')),
+        ('4', gettext_noop('Good')),
+        ('5', gettext_noop('Best')),
+    )
+
+    id = models.AutoField(primary_key=True)
+    plate_number = models.CharField(max_length=20, unique=True)
+    bus_company = models.ForeignKey('Company', on_delete=models.CASCADE)
     type_of_bus = models.CharField(max_length=255, choices=BUSTYPE)
     ticket_price = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
@@ -169,54 +251,35 @@ class Bus(models.Model):
     departure_time = models.TimeField(null=True)
     arrival_date = models.DateField(null=True)
     arrival_time = models.TimeField(null=True)
-    #route = models.ForeignKey(Route,on_delete=models.CASCADE)
-    location_from = models.CharField(max_length=255, choices=BUSFROM,default='KIGALI')
-    location_to = models.CharField(max_length=255,choices=BUSTO,default='KIGALI')     
+    location_from = models.CharField(max_length=255, choices=BUSFROM, default='KIGALI')
+    location_to = models.CharField(max_length=255, choices=BUSTO, default='KIGALI')
     seats = models.PositiveSmallIntegerField(default=1, verbose_name="Number of seats")
-    #seatd = models.CharField(max_length=100,default=None,blank=True,null=True)
-    #jseats = models.JSONField(default=None,blank=True,null=True)
     image = models.ImageField(upload_to='bus/%Y/%m/%d', blank=True)
     slug = models.SlugField()
     available = models.BooleanField(default=True)
-
-    liked = models.ManyToManyField(User, related_name='liked',default=None,blank=True)
+    liked = models.ManyToManyField(User, related_name='liked', default=None, blank=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
     comments = GenericRelation(Comment)
-    RATING_CHOICE = (
-        ('1', gettext_noop('Worst')),
-        ('2', gettext_noop('Bed')),
-        ('3', gettext_noop('Average')),
-        ('4', gettext_noop('Good')),
-        ('5', gettext_noop('Best')),
-    )
     ratings = models.CharField(
         blank=True, null=True, max_length=1, db_index=True, choices=RATING_CHOICE
     )
-    
+    Tags = models.ManyToManyField(Tag, related_name='bus_details', blank=False)
 
-    Tags = models.ManyToManyField(Tag,related_name='bus_details', blank=False)
-
-    def __str__(self):
-        return '{0}:{1}:{2}:{3}:{4}'.format(self.bus_company,self.type_of_bus,str(self.plate_number), self.route, self.departure_date)
-    
     class Meta:
         ordering = ('created',)
-        verbose_name_plural = "buses"
-        index_together = (('id', 'slug','location_from', 'location_to'),)
-
-
-    def get_absolute_url(self):
-        return reverse('bus_detail',args=[self.id, self.slug])
-
-    #def __init__(self, *args, **kwargs):
-    #    super().__init__(*args, **kwargs)
-    #    if self.seatd:
-    #        self.seatd= eval(self.seatd)
+        verbose_name_plural = "Buses"
+        indexes = [
+            models.Index(fields=['id', 'slug', 'location_from', 'location_to']),
+        ]
 
     def __str__(self):
         if self.location_from == self.location_to:
-            raise ValidationError('To and From Can not be the same')
+            raise ValidationError('To and From cannot be the same')
         return '{0} to {1}'.format(str(self.location_from), str(self.location_to))
+
+    def get_absolute_url(self):
+        return reverse('bus_detail', args=[self.id, self.slug])
+
 
 
 
