@@ -1,0 +1,65 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+
+
+{% block content %}
+<p><a href="{% url 'web:company-home' %}" class="text-primary"><< Back</a></p>
+	{% if company and company.available == True and company.manager == user %}
+<p class="text-primary h6">{{company.name}}<img src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="50" height="50" class="rounded-circle m-2"><br></p>
+<p>
+Phone : {{company.phone}}<br>
+{{company.email}}<br>
+{{company.description}} <br>
+{{company.address}} <br><p>
+<p>
+<a href="{% url 'web:company-update' company.id %}"><text class="text-primary btn btn-outline-danger"><i class="fas fa-cog fa-fw"></i>Update | Modify</text></a></p>
+<p><a href="{% url 'web:bus-create' %}"><text class="text-primary btn btn-outline-danger"><i class="fas fa-bus"></i>Add New bus | vehicle</text> </a></p>
+<p>
+<p><a href="{% url 'web:company-delete' company.id %}"><text class="text-dark"><i class="fas fa-skull"></i><i class="fas fa-trash-alt"></i> </text><text class="text-danger small">Remove | Delete Your Company</text> </a></p>
+<small class="text-rpimary">Added {{ company.created|timesince }} ago</small></p>
+<p>
+ <text class="text-primary">{% get_hit_count for company %} views</text> <text class="text-danger font-weight-bold float-right">{{ company.cliked.all.count }} <i class="fa fa-thumbs-up" aria-hidden="true"></i></text></p>
+{% endif %}
+<p class="text-danger text-center h6"> Vehicles in {{company.name}} </p>
+{% if buses %}
+{% for bus in buses %}
+<p>
+<img src="{% if bus.image %}{{ bus.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="50" height="50" class="rounded-circle">
+  
+         {{bus.bus_type}} 
+        <small class="text-muted font-weight-bold">{{ bus.bus_company }} | {{ bus.plate_number}} </small><br>
+        <small class="text-danger">Time :{{bus.departure_time}},{{bus.departure_date}} </small><br>
+        <small class="text-primary">{{bus.location_from}} To {{bus.location_to}}</small><br>
+        <small class="text-dark">Added {{ bus.created|timesince }} ago</small><br>
+        <a href="{% url 'web:company-bus-detail' bus.pk bus.slug %}"><text class="text-primary btn btn-outline-danger"><i class="fas fa-bus" aria-hidden="true"></i>Vehicle detail</text></a></p>
+
+
+{% endfor %}
+{% else %}
+<p><h2>No <img src="{% static 'img/favicon.png' %}" > found</h2> </p>
+{% endif %}
+
+
+
+<div class="row justify-content-center border bg-light">
+         <div class="pagination">
+    <span class="step-links">
+        {% if buses.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ buss.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            <small class="text-info">Page {{ buses.number }} of {{ buses.paginator.num_pages }}.</small>
+        </span>
+
+        {% if buses.has_next %}
+            <a href="?page={{ buss.next_page_number }}">next</a>
+            <a href="?page={{ buss.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+{% endblock content %}

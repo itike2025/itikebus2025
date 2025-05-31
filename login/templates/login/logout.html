@@ -1,0 +1,10 @@
+{% extends 'login/base.html' %}
+{% block content %}
+<p class="display-5">You are logged out!</p>
+<div class="line"></div>
+<p class="text-danger "><i class="fas fa-user"></i><a href="{% url 'login' %}">Click here to
+login again</a></p>
+<div class="line"></div>
+<p class="text-danger"><i class="fas fa-home"></i><a href="{% url 'index' %}">Go to Home
+page</a></p>
+{% endblock content %}

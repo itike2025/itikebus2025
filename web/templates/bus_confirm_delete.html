@@ -1,0 +1,12 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<p>
+<form method="POST" action="">
+{% csrf_token %}
+Are you sure you want to delete this vehicle. This can not be undone!!! 
+<button type="submit" class="btn btn-outline-danger " value="Yes">Yes</button><br>
+<a class="btn btn-outline-info mx-3" href="{% url 'web:company-home' %}"> Cancel </a>
+</form>
+</p>
+{% endblock content %}

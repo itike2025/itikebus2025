@@ -1,0 +1,18 @@
+<!-- templates/email.html -->
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<p><h4>Contact Us:</h4></p>
+<div class="line"></div>
+ <p>
+<form method="post">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-danger">Send</button>
+    </div>
+</form>
+</p>
+{% endblock content %}

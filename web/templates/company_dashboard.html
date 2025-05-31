@@ -1,0 +1,37 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+
+
+{% block content %}
+{% if message %} <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}</div> {% endif %}</p> 
+
+
+{% if co %}
+{% for company in co %}
+{% if company.available == True and company.manager == user %}
+<p class="text-center text-danger h6">{{user.username}}, You Already registered Company: <text class="text-primary text-center h6"> {{ company.name }} </text></p>
+<div class="line"></div>
+	<p class="text-danger h4">{{company.name}} <img src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="30" height="30" class="rounded-circle m-1"></p>
+<p>Phone:{{company.phone}} <br>
+{{company.email}} <br>
+{{company.description}}<br>
+{{company.address}} </p>
+<a href="{% url 'web:company-detail' company.id %}"><text class="btn btn-outline-danger text text-primary"><i class="fas fa-cog fa-fw"></i>Company Dashboard</text></a></p>
+
+<p><small class="text-dark">Added {{ company.created|timesince }} ago</small></p>
+<p>
+ <text class="text-primary">{% get_hit_count for company %} views</text> <text class="text-danger font-weight-bold float-right">{{ company.cliked.all.count }} <i class="fa fa-thumbs-up" aria-hidden="true"></i></text></p>
+
+ {% elif company.available == False and company.manager == user %}
+<p class="text-center text-danger h6">You Already registered Company: <text class="text-primary text-center h6"> {{ company.name }} </text></p>
+<p class="text-primary">{{ company.name }} is not avtive yet.  iTiKe will contact you after verification </p> 
+{% endif %}
+{% endfor %}
+
+{% else %}
+<p class="text-danger">{{ user.username }}, You Did Not Register a Company.</p>
+<p class="text-primary"><a href="{% url 'web:company-create' %}">you Can Register a Company| Business Here.</a></p>
+{% endif %}
+{% endblock content %}

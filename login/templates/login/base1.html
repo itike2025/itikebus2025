@@ -1,0 +1,320 @@
+<!doctype html><html lang="en">
+<head>
+{% load static %}
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{% block title %}RwandaBus{% endblock %}</title>
+<link rel="icon" href="{% static 'img/favicon.png' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{% url 'js-catlog' %}"></script>
+<script src="{% static '/admin/js/core.js' %}"></script>
+<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+
+
+<style type="text/css">
+
+body { padding-top: 20px; }
+
+
+    /*FOOTER*/
+
+footer {
+  background: #16222A;
+  background: -webkit-linear-gradient(59deg, #3A6073, #16222A);
+  background: linear-gradient(59deg, #3A6073, #16222A);
+  color: white;
+  margin-top:20px;
+}
+
+footer a {
+  color: #fff;
+  font-size: 14px;
+  transition-duration: 0.2s;
+}
+
+footer a:hover {
+  color: #FA944B;
+  text-decoration: none;
+}
+
+.copy {
+  font-size: 12px;
+  padding: 10px;
+  border-top: 2px solid #FFFFFF;
+}
+
+.footer-middle {
+  padding-top: 2em;
+  color: white;
+}
+
+
+/*SOCİAL İCONS*/
+
+/* footer social icons */
+
+ul.social-network {
+  list-style: none;
+  display: inline;
+  margin-left: 0 !important;
+  padding: 0;
+}
+
+ul.social-network li {
+  display: inline;
+  margin: 0 5px;
+}
+
+
+/* footer social icons */
+
+.social-network a.icoFacebook:hover {
+  background-color: #3B5998;
+}
+
+.social-network a.icoLinkedin:hover {
+  background-color: #007bb7;
+}
+
+.social-network a.icoGoogle:hover {
+  background-color: #007bb7;
+}
+
+.social-network a.icoTwitter:hover {
+  background-color: #007bb7;
+}
+.social-network a.icoFacebook:hover i,
+.social-network a.icoLinkedin:hover i,
+.social-network a.icoTwitter:hover i,
+.social-network a.icoGoogle:hover i {
+  color: #BD3518;
+}
+
+.social-network a.socialIcon:hover,
+.socialHoverClass {
+  color: #44BCDD;
+}
+
+.social-circle li a {
+  display: inline-block;
+  position: relative;
+  margin: 0 auto 0 auto;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+.social-circle li i {
+  margin: 0;
+  line-height: 30px;
+  text-align: center;
+}
+
+.social-circle li a:hover i,
+.triggeredHover {
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -ms--transform: rotate(360deg);
+  transform: rotate(360deg);
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.social-circle i {
+  color: #595959;
+  -webkit-transition: all 0.8s;
+  -moz-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  -ms-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+.social-network a {
+  background-color: #F9F9F9;
+}
+
+.bs-example{
+        margin-top: 40px;
+    }
+    .navbar{
+        margin-bottom: 1rem;
+    }
+
+.vl {
+  border-right: 2px solid gray;
+
+
+}
+</style>
+
+</style>
+
+</head>
+</head>
+<body>
+  <div class="bs-example"></div>
+<nav class="navbar navbar-light ">
+</nav>
+{%if user.is_authenticated %}
+        <nav class="navbar navbar-expand-md navbar-dark bg-light ">
+      <div class="container">
+        <a href="{% url 'index' %}">
+        <img src="{% static 'wjh.png' %}" alt="Mylogo" width="50" height="40" class="rounded-circle mx-1"><text class="font-italic text-dark font-weight-bold">RwandaBus<i class="fa fa-home mx-2"></i></text></a>
+        <a class="navbar-brand  text-dark mx-2" href="{% url 'web:findbus' %}"><i class="fa fa-bus" aria-hidden="true"></i>Find Bus</a>
+
+        <ul class="nav navbar-nav ml-auto">
+         <a  href="{% url 'show_cart' %}" class="nav-item nav-link mx-2 float-right text-dark font-weight-bold"><i class="fa fa-shopping-cart mx-1" aria-hidden="true"></i>{{ cart_item_count }}</a>
+
+         <li class="nav-item dropdown">
+       <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><text class="text-dark font-weight-bold"><i class="fa fa-tools-circle-o m-1"></i>Tools</text></a>
+       <div class="dropdown-menu">
+      <a href="{% url 'web:company-create' %}" class="nav-item nav-link text-dark mx-3">Register company <i class="fa fa-house"></i></a>
+      <a href="{% url 'web:company-home' %}" class="nav-item nav-link text-dark mx-3">Find company <i class="fa fa-house"></i></a>
+    </div>
+  </li>
+
+
+
+
+
+
+          <li class="nav-item dropdown">
+       <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><text class="text-light font-weight-bold"><i class="fa fa-user-circle-o m-1"></i>{{user.username}} Profile</text></a>
+       <div class="dropdown-menu">
+      <a href="{% url 'home_user' %}" class="nav-item nav-link text-dark mx-3">{{user.username}}' Home <i class="fa fa-user"></i></a>
+
+        <a href="{% url 'profile' %}" class="nav-item nav-link text-dark">{{user.username}}' Profile <i class="fa fa-user"></i></a>
+      <a class="dropdown-item text-dark" href="{% url 'aboutus' %}"><i class="fa fa-handshake-o" aria-hidden="true"></i>About RwandaBus</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{% url 'emailus' %}"><i class="fa fa-phone"></i>Contuct Us</a>
+    </div>
+  </li>
+  
+   <a href="{%url 'logout' %}" class="nav-item nav-link text-light float-right mx-2"><i class="fa fa-sign-out"></i> Logout</a>
+            <img class="rounded-circle account-img" height="30" width="30" src="{{user.profile.user_image.url}}">
+          </ul>
+          </div>
+           
+    </nav>
+<div class=""><br></div>
+{% else %}
+<nav class="navbar navbar-expand-md navbar-lighr bg-lght ">
+      <div class="container">
+<ul class="nav navbar-nav">
+<li><img src="{% static 'wjh.png' %}" alt="Mylogo" width="50" height="40" class="rounded-circle ml-5"></li>
+
+<li>
+<a href="{% url 'index' %}" class="navbar-brand"><text class="font-italic text-dark font-weight-bold">RwandaBus</text></i></a>
+</li>
+<li>
+    <a href="{% url 'index' %}" class="navbar-brand  text-dark"><i class="fa fa-home"></i></a>
+    <a class="navbar-brand  text-light" href="{% url 'web:findbus' %}"><i class="fa fa-bus" aria-hidden="true"></i>Find Bus</a>
+
+    </li>
+
+</ul>
+<ul class="nav navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+       <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About RwandaBus</a>
+       <div class="dropdown-menu">
+      <a class="dropdown-item text-dark" href="{% url 'aboutus' %}"><i class="fa fa-handshake-o" aria-hidden="true"></i>About Us</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item text-dark" href="{% url 'emailus' %}"><i class="fa fa-phone"></i>Contuct Us</a>
+    </li>
+      <li class="nav-item nav-link text-dark mx-3"><i class="fa fa-user-circle-o" aria-hidden="true"></i><a href="{% url 'register' %}" class="text-light"> Sign Up</a></li>
+      <li class="nav-item nav-link text-dark"><i class="fa fa-sign-in" aria-hidden="true"></i><a href="{% url 'login' %}" class="text-light"> Login</a></li>
+    </ul>
+  </div>
+</nav>
+{% endif %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}">
+{{message}}
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+<div class="col-lg-1"></div>
+<div class="col-lg-10">
+{% block content %}
+{% endblock content %}
+</div>
+<div class="col-lg-1"></div>
+</div>
+</div>
+       <!-- Footer -->
+<footer class="mainfooter" role="contentinfo">
+  <div class="footer-middle">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <!--Column1-->
+        <div class="footer-pad">
+          <div class="text-center">
+     <img src="{% static "wjh.png" %}" alt="Mylogo" width="70" height="60" class="rounded-circle" >
+     <a href="#">RwandaBus </a>
+        </div>
+
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <!--Column1-->
+        <div class="footer-pad">
+        <div class="text-center">
+          
+          <ul class="list-unstyled">
+            <li><i class="fa fa-envelope"></i>
+<small class="text-light">infoitike@gmail.com</small></li>
+          <li><i class="fa fa-map-marker"></i>
+ <small class="text-light">+250 785540835 Kigali, Rwanda</small></li>
+          </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <!--Column1-->
+        <div class="footer-pad">
+          <h6>Business</h6>
+          <ul class="list-unstyled">
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Services</a></li>
+          </ul>
+        </div>
+      </div>
+        <div class="col-md-3">
+            <h6>Follow Us</h6>
+            <ul class="social-network social-circle">
+             <li><a href="https://www.facebook.com/habayeiki.wjh.9" target ="_blank" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+             <li><a href="#" class="icoLinkedin" target ="_blank" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+             <li><a href="#" class="icoGoogle" target ="_blank" title="icoGoogle" target ="_blank"><i class="fa fa-google-plus"></i></a></li>
+             <li><a href="https://twitter.com/habayeiki" class="icoTwitter" title="icoTwitter" target ="_blank"><i class="fa fa-twitter"></i> </a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 copy">
+            <p class="text-center">&copy; Copyright 2025 - iTiKe.  All Rights Reserved.</p>
+        </div>
+    </div>
+
+
+  </div>
+  </div>
+</footer>
+</div>
+  </body>
+</html>

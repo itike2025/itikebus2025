@@ -1,0 +1,88 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+{% load social_share %}
+
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function() {
+$('.mdb-select').materialSelect();
+});
+</script>
+<p class="text-center h4"><text class="text-danger" >Book  Ticket | Gura Itike</text></p>
+<div class="line"></div>
+<p class="text-center h3"><img src="{% if bus.image %}{{ bus.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="100" height="100" class="rounded-circle">
+        {{ bus.bus_company }}  </p>
+<p class="text-center">
+        <text class="text-muted font-weight-bold">{{ bus.plate_number}} </text><br>
+        <text class="text-muted font-weight-bold">Ticket#: {{bus.id}}</text><br>
+        <text class="text-dark font-weight-bold">{{bus.location_from}} <i class="fas fa-road m-2" aria-hidden="true"></i>
+  {{bus.location_to}}<br>
+  <text class="text-muted font-weight-bold">Departure </text><br>
+        <text class="text-dark font-weight-bold">{{bus.departure_time}} <i class="fas fa-clock m-2" aria-hidden="true"></i>
+ {{bus.departure_date}}. </text><br>
+        <text class="text-danger font-weight-bold h4"> Frw {{ bus.ticket_price }}</text>
+    </p>
+<div class="line"></div>
+<p class=small> {% post_to_facebook bus "Share on " %} <i class="fab fa-facebook"></i><br>
+  {% post_to_twitter " {{bus.bus_company}}" "share on Twitter" %} <i class="fab fa-twitter"></i>
+</p>
+        <p> <text class="text-primary">{% get_hit_count for bus %} views</text> <text class="text-danger font-weight-bold float-right">{{ bus.liked.all.count }} Likes</text></p>
+        <p>
+          <form action="{% url 'like-pro' %}" method="POST" class=" float-right">
+          {% csrf_token %}
+
+          <input type="hidden" name="bus_id" value="{{ bus.id }}"> 
+          {% if  user not in bus.liked.all %}
+          <button class ="btn btn-outline-danger" type="submit">
+
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+           Like</button>
+
+          {% else %}
+          <button class="btn btn-outline-danger " type="submit"><i class="fa fa-thumbs-down" aria-hidden="true"></i>UnLike</button>
+
+          {% endif %}
+
+        </form>
+        </p>
+        
+      <div class="line"></div>
+       
+ {% if message %}<p> <i class="fas fa-exclamation-triangle" aria-hidden="true"></i><texte class="text-danger"> {{ message }}: Quantity {{ data1}}. Seats {{ data}}</texte> </p>{% endif %}
+
+<p>
+        <h5><text class="text-danger font-weight-bold">Frw {{ bus.ticket_price }} | Book your ticket now</text></h5>
+                <form action="{% url 'bus_detail' bus.id bus.slug %}" method="post">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    
+                      <label class="form-check-label m-2" for="inlineCheckbox1">Select seat | Hitamo Intebe</label>
+                      {% for seat in seats %}
+<div class="form-check-inline ">
+  <input class="form-check-input" type="checkbox" id="{seat.id}}" name="seatd" value="{{seat.id}}">
+  <label class="form-check-label" for="{{seat.id}}1">{{seat.seatlabel}}</label>
+  </div>
+  
+  {% endfor %}
+
+
+
+                    <input type="submit" value="Add to cart" class="btn btn-outline-info m-4" >
+                </form>
+                </p>
+               
+
+
+<div>
+<p>
+  {% render_comments bus request %}
+         {% include_static %}
+</p>
+</div>
+{% endblock %}
+
+

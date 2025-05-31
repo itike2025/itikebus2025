@@ -1,0 +1,42 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block content %}
+<p class="text-info">
+{{user.username}} ' Tickets orders:
+ {% if os %}
+ {% for o in os %}
+
+<p class="text-dark small"> {{ forloop.counter }}-{{o.date_added}}- {{o.order.name}} -Frw{{o.price}}-Qty:{{o.quantity}}-{{ o.bus.bus_company.name}}-{{ o.bus.location_from}}->{{ o.bus.location_to}}</p>
+ {% endfor %}
+
+
+ {% else %}
+ <p class="text-danger text-center"> You did not order yet</p>
+ {% endif %}
+</p>
+
+<div class="row justify-content-center border bg-light">
+         <div class="pagination">
+    <span class="step-links">
+        {% if os.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ buss.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            <small class="text-info">Page {{ os.number }} of {{ os.paginator.num_pages }}.</small>
+        </span>
+
+        {% if os.has_next %}
+            <a href="?page={{ buss.next_page_number }}">next</a>
+            <a href="?page={{ buss.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+{% endblock content %}
+

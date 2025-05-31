@@ -1,0 +1,21 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="col-md-8 col-md-offset-2">
+    <form class="form-horizontal" action="{% url 'web:select' %}" method="GET" name="q">
+        
+    {% if message %}
+    {{ message }}
+
+    {% endif %}
+    {{ form.media }}
+    {{ form | crispy }}
+        
+    <input type="submit" value="Search" class="btn btn-outline-danger">
+    
+    </form>
+    </div>
+
+{% endblock %}

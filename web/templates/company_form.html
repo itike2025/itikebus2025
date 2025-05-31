@@ -1,0 +1,26 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<p><a href="{% url 'web:company-home' %}" class="text-primary"><< Back</a></p>
+
+{% block content %}
+      
+ {% if message %}<p>  <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}</p> {% endif %} 
+<div class="line"></div>
+
+{% if exst %}
+{% for c in exst %}
+<p class="text-center text-danger h6"><a href="{% url 'web:company-home' %}">You already registered company:<text class="text-primary"> {{c.name}}</text></a></p>
+{% endfor %}
+{% else %}
+
+<p><text class="text-danger font-weight-bold h6">Register company | Business</text>
+                <form  method="post"  enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input type="submit" value="Create company" class="btn btn-outline-danger" >
+                </form>
+{% endif %}
+</p>
+{% endblock %}

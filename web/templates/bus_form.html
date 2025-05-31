@@ -1,0 +1,30 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+
+
+{% block content %}
+<p><a href="{% url 'web:company-home' %}" class="text-primary"><< Back</a></p>
+
+<p>      
+ {% if message %} <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}</div> {% endif %}</p> 
+ <p><text class="text-danger font-weight-bold">
+ Company Name</text> :<text class="text-dark font-weight-bold">{{ user.company}}</text><br>
+ <text class="text-danger font-weight-bold"> Manager :</text> <text class="text-dark font-weight-bold">{{user.username}}</text>
+</p>
+<div class="line"></div>
+<p>
+ <h5><text class="text-danger font-weight-bold">Add Bus | Vehicle</text></h5>
+    *slug can be any name. E.g: your company name
+</p>
+<p>
+        
+                <form  method="post" form enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input type="submit" value="Register Bus | vehicle" class="btn btn-outline-danger m-4" >
+                </form>
+           </p>
+{% endblock %}

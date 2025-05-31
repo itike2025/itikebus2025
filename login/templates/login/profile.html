@@ -1,0 +1,31 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<p><h3>{{user.username}}' Profile</h3> <img class="img-circle account-img m-3" height="60" width="60" src="{{user.profile.user_image.url}}"></p>
+
+<div class="line"></div>
+
+<p>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+<fieldset class="border p-3">
+    <legend class="border-bottom mb-4">Profile Info</legend>
+    {{ u_form | crispy }}
+    
+{{ p_form | crispy }}
+</fieldset>
+<fieldset class="border p-3">
+    <button type="submit" class="btn btn-danger">Update</button>
+    </fieldset>
+     </form>
+    
+</p>
+<div class="line"></div>
+    <p class="border bg-light small">
+    <a href="{% url 'change_password'  %}" class="nav-item nav-link" style="color: blue">Click Here to change password for  {{user.username}} <i class="fas fa-key"></i></a></p>
+<div class="line"></div>
+    <p class="border bg-light small">
+    <a href="{% url 'deleteuser' user.id %}" class="nav-item nav-link" style="color: red">Click Here to Terminate the account of {{user.username}} <i class="fas fa-user"></i></a></p>
+{% endblock content %}
+

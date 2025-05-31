@@ -1,0 +1,95 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+
+
+{% block content %}
+{% if message %} <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}</div> {% endif %}</p> 
+
+{% for company in companies %}
+
+{% if company.available == True and company.manager == user %}
+<p class="text-center text-danger h6">You Already registered Company: <text class="text-primary text-center h6"> {{ company.name }} </text></p>
+<div class="line"></div>
+	<p class="text-danger h4">{{company.name}} <img src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="30" height="30" class="rounded-circle m-1"></p>
+<p>Phone:{{company.phone}} <br>
+{{company.email}} <br>
+{{company.description}}<br>
+{{company.address}} </p>
+<a href="{% url 'web:company-detail' company.id %}"><text class="text text-primary btn btn-outline-danger"><i class="fas fa-cog fa-fw"></i>Company Dashboard</text></a></p>
+
+<p><small class="text-dark">Added {{ company.created|timesince }} ago</small></p>
+<p>
+ <text class="text-primary">{% get_hit_count for company %} views</text> <text class="text-danger font-weight-bold float-right">{{ company.cliked.all.count }} <i class="fa fa-thumbs-up" aria-hidden="true"></i></text></p>
+
+ {% elif company.available == False and company.manager == user %}
+<p class="text-center text-danger h6">You Already registered Company: <text class="text-primary text-center h6"> {{ company.name }} </text></p>
+<p class="text-primary">{{ company.name }} is not avtive yet.  iTiKe will contact you after verification </p> 
+{% endif %}
+{% endfor %}
+
+<div class="line"></div>
+
+<p class="text-center text-danger h6">Other companies working with us</p>
+	{% if companies %}
+	{% for company in companies %}
+	{% if company.available == True %}
+<p class="text-primary h6">{{company.name}} <img src="{% if company.logo %}{{ company.logo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="30" height="30" class="rounded-circle m-1"></p>
+Phone:{{company.phone}}<br>
+{{company.email}} <br>
+{{company.description}} <br>
+{{company.address}} </p>
+<p><small class="text-primary">Added {{ company.created|timesince }} ago</small></p>
+<p>
+ <text class="text-primary">{% get_hit_count for company %} views</text> <text class="text-danger font-weight-bold float-right">{{ company.cliked.all.count }} <i class="fa fa-thumbs-up" aria-hidden="true"></i></text></p>
+ <p>
+          <form action="{% url 'like-company' %}" method="POST" class=" float-right">
+          {% csrf_token %}
+
+          <input type="hidden" name="bus_id" value="{{ company.id }}"> 
+          {% if  user not in company.cliked.all %}
+          <button class ="btn btn-outline-danger" type="submit">
+
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+           Like</button>
+
+          {% else %}
+          <button class="btn btn-outline-danger " type="submit"><i class="fa fa-thumbs-down" aria-hidden="true"></i>UnLike</button>
+
+          {% endif %}
+
+        </form>
+        </p>
+ <div class="line"></div>
+{% endif %}
+{% endfor %}
+{% else %}
+<p><h4> No Company Found </h4></p>
+	{% endif %}
+
+
+<div class="row justify-content-center border bg-light">
+         <div class="pagination">
+    <span class="step-links">
+        {% if companies.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ buss.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            <small class="text-info">Page {{ companies.number }} of {{ companies.paginator.num_pages }}.</small>
+        </span>
+
+        {% if companies.has_next %}
+            <a href="?page={{ buss.next_page_number }}">next</a>
+            <a href="?page={{ buss.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+{% endblock content %}
+
+
+
+

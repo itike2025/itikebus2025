@@ -1,0 +1,16 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<p>
+   <h4>Delete user : {{ user.username }}?</h4> <img class="img-circle account-img m-3" height="100" width="100" src="{{user.profile.user_image.url}}">
+ </p>
+ <div class="line"></div>
+ <p>
+<form method="POST" action="">
+{% csrf_token %}
+Are you sure you want to delete: {{ user.username }}? 
+<button type="submit" class="btn btn-outline-danger " value="Yes">Yes</button>
+<a class="btn btn-outline-info mx-3" href="{% url 'profile' %}"> Cancel </a>
+</form>
+</p>
+{% endblock content %}

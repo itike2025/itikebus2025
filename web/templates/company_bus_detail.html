@@ -1,0 +1,44 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load hitcount_tags %}
+{% load comment_tags %}
+
+
+{% block content %}
+<p><a href="{% url 'web:company-home' %}" class="text-primary"><< Back</a></p>
+<p>
+<img src="{% if bus.image %}{{ bus.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="70" height="70" class="rounded-circle">
+<text class="text-primary">Ticket price : {{ bus.ticket_price }}</text><br>
+<text class="text-dark">PlateNumber :{{bus.plate_number}} </text><br>
+<text class="text-dark">Company name :{{bus.bus_company}} </text><br>
+</p>
+<p>
+<a href="{% url 'web:bus-update' bus.id %}"><text class="text-primary btn btn-outline-danger"><i class="fas fa-cog fa-fw"></i>Update | Modify</text></a></p>
+<p><a href="{% url 'web:bus-delete' bus.id %}"><text class="text-dark"><i class="fas fa-skull"></i><i class="fas fa-trash-alt"></i> </text><text class="text-danger small">Remove | Delete This Car </text> </a></p>
+<text class="text-info">Vehicle type :{{bus.type_of_bus}} </text><br>
+<text class="text-danger">Departure date :{{bus.departure_date}} </text><br>
+<text class="text-danger">Departure time :{{bus.departure_time}} </text><br>
+<text class="text-primary">From :{{bus.location_from}} </text><br>
+<text class="text-primary">To :{{bus.location_to}} </text><br>
+<text class="text-dark">Number of seats :{{bus.seats}} </text><br>
+</p>
+<p class="card-text border bg-light"> <text class="text-primary">{% get_hit_count for bus %} views</text> <text class="text-danger font-weight-bold float-right">{{ bus.liked.all.count }} Likes</text></p>
+<p class="text-center text-danger">Booking History</p>
+<p>
+	{% if orders %}
+	{% for order in orders %}
+	<p class="small text-dark">{{forloop.counter}}-{{order.date_added}}-Frw{{order.price}}-Qty:{{order.quantity}}-User:{{order.user}}-Customer:{{order.order.name}}</p>
+	
+       {% endfor %}
+	{% else %}
+<p class="text-danger text-center ">No Booking Found</p>
+	{% endif %}
+
+</p>
+<div class="line"></div>
+<p>
+  {% render_comments bus request %}
+         {% include_static %}
+</p>
+{% endblock content %}

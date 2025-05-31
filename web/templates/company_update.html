@@ -1,0 +1,20 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block content %}
+<p><a href="{% url 'web:company-home' %}" class="text-primary"><< Back</a></p>
+<p>       
+ {% if message %} <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> {{ message }} {% endif %} </p>
+<div class="line"></div>
+<p class="text-danger text-center font-weight-bold h6">Update 
+                <form  method="post"  enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input type="submit" value="Update" class="btn btn-outline-danger" >
+                </form>
+</p>
+
+{% endblock %}

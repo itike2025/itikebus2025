@@ -1,0 +1,31 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Checkout |
+{% endblock %}
+
+{% block content %}
+<p class="text-center text-danger h4 m-2">Checkout |<a href="{% url 'show_cart' %}"><i class="fas fa-shopping-cart" aria-hidden="true"></i>{{ cart_item_count }}</a></p>
+   
+ <div class="line"></div>           
+
+ <p>           {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+</p>
+<p>
+
+            <form action="" method="post">
+                <table>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <tr>
+                        <td></td>
+                        <td><input class="btn btn-outline-danger" type="submit" value="Place Order"></td>
+                    </tr>
+                </table>
+            </form>
+</p>
+{% endblock %}

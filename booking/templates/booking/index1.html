@@ -1,0 +1,129 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% load crispy_forms_field %}
+{% load hitcount_tags %}
+
+
+
+{% block content %}
+    <p>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <p class="text-center text-danger h6">Find a Ride by Company or Price | Shaka Ingendo kuri Sosiyeti cg Igiciro </p>
+
+  
+        <i class="fa fa-building prefix grey-text"></i>
+        <select name="company" class="select form-control">
+                        <option value="-">Company</option>
+                    {% for c in companies %}
+                          <option value="{{c.id}}">{{c.name}}</option>
+                    {% endfor %}
+                    </select>
+
+        <i class="fa fa-star prefix grey-text"></i>
+        <select name="rating" class="select form-control">
+                        <option value="-">Rating</option>
+                    {% for c_r in rating %}
+                          <option value="{{c_r.0}}">{{c_r.1}}</option>
+                    {% endfor %}
+                    </select>
+  
+        <i class="fas fa-money-bill-alt prefix grey-text"></i>
+        <label for="materialFormCardPasswordEx" class="font-weight-light">Price</label>
+        <input  maxlength="7" size="7" placeholder="Min" name="min_price" class="form-control" /> - <input maxlength="7" size="7" placeholder="Max" name="max_price" class="form-control" />
+        <div class="line"></div>
+        <input type="submit" class="btn btn-outline-danger " value="Search Now">
+    </form>
+    <form method="GET" action="">
+                  <button class="btn btn-cyan text-danger" type="submit" value="Clear All">Clear All</button>
+            </form>
+  </p>
+
+
+
+            {% if buses %}
+
+{% for bus in buses %}
+<p class="text-center">
+<div class="table-responsive">
+<table class="table table-hover table-responsive">
+  <thead class="thead-danger">
+    <tr>
+      <th scope="col">Bus Company</th>
+      <th scope="col">Departure</th>
+      <th scope="col">Arrival</th>
+    </tr>
+  </thead>
+  <tbody class="table table-bordered">
+    <tr>
+      <th scope="row" class="h3"><a href="#">{{ bus.bus_company }}</th>
+      <td><a href="#"><text class="text text-danger"><i class="fas fa-map-marker mx-1"></i>{{ bus.location_from }}</text></a></td>
+      <td><a href="#"><i class="fas fa-map-marker mx-1"></i>{{ bus.location_to }}</a></td>  
+    </tr>
+    <tr>
+      <td><a href="#"><i class="fa fa-bus" aria-hidden="true"></i>
+{{ bus.type_of_bus }}<br><small>{{ bus.plate_number}}</small><br><span class="badge badge-pill badge-dark">{{ bus.seats }} <small> seats</small></span></td>
+      <td><a href="#"><text class="text text-danger"><i class="fas fa-clock mx-1" aria-hidden="true"></i>
+{{ bus.departure_time }}<br>{{ bus.departure_date }}</text></a></td>
+      <td><a href="#"><text class="text text-info"><i class="fas fa-clock mx-1" aria-hidden="true "></i>
+{{ bus.arrival_time }}<br>{{ bus.arrival_date }}</text></a></td>
+    </tr>
+
+    <th scope="col">Ratings</th>
+      <th scope="col" colspan="2" class="text-center">Fare | Igiciro</th>
+        <tr>
+
+       <td >
+<br><span class="badge badge-pill badge-primary">
+  Views</span> <span class="badge badge-light">{% get_hit_count for bus %}</span>
+<br>
+<span class="badge badge-pill badge-danger">
+<i class="fas fa-thumbs-up mx-2" aria-hidden="true"></i>{{ bus.liked.all.count }}</span>
+</td>
+<td ><span class="badge  badge-dark"><h5>Frw <text class="font-weight-bold">{{ bus.ticket_price }}</text></h5></span></td>
+       
+
+        <td><a href="{% url 'bus_detail' bus.pk bus.slug %}"><text class="text text-danger"><input class="btn btn-outline-danger float-right" type="submit" value="Book Ticket"></text></a></td>
+
+ </tr>
+
+    </table>
+    <small class="text-primary">added {{ bus.created|timesince }} ago</small>
+</p>
+{% endfor %}
+<p>
+            {% else %}
+            
+                <h2>No <img src="{% static 'img/favicon.png' %}" > found.</h2> </p>
+            {% endif %}
+
+<div class="row justify-content-center border bg-light">
+         <div class="pagination">
+    <span class="step-links">
+        {% if buses.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ buss.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            <small class="text-info">Page {{ buses.number }} of {{ buses.paginator.num_pages }}.</small>
+        </span>
+
+        {% if buses.has_next %}
+            <a href="?page={{ buss.next_page_number }}">next</a>
+            <a href="?page={{ buss.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+     

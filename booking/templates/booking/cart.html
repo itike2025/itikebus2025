@@ -1,0 +1,74 @@
+{% extends 'login/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+
+<p class="text-center text-danger h5">Tickets in Cart</p>
+<p>
+    {% if cart_item_count %}
+    
+<table >
+        <thead class="text-danger">
+        <tr>
+            <th>Bus</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Total</th>
+</tr>
+</thead>
+        <tbody class="table table-bordered">
+        {% for item in cart_items %}
+            <tr>
+                <td>
+              <a href="{{ item.bus.get_absolute_url }}">
+                <img src="{% if item.bus.image %}{{ item.bus.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" width="50" height="50">
+              </a>
+            </td>
+            </td>
+                <td>{{ item.bus.bus_company }}<br>{{ item.bus.plate_number }}
+            </td>
+            <td>{{ item.price }}  <small>X {{item.quantity}}</small>
+            </td>
+            <td rowspan="3">Frw {{ item.total_cost }}</td>
+        </tr>
+        <tr>
+            <th>Route</th>
+            <th>Seats Nbr</th>
+            <td rowspan="2">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}"><i class="fa fa-trash" aria-hidden="true"></i>
+                        <input type="submit" name="submit" value="Remove" >
+                    </form>
+                </td>
+        </tr>
+        <td>{{ item.bus.location_from }} | 
+      {{ item.bus.location_to }}<br><text class="text-small">{{ item.bus.departure_time }}<br>{{ item.bus.departure_date }}</text></td>
+      <td>  <span class="badge badge-pill badge-dark">{{item.seats_number}} </span></td>
+{% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="table-success" style="text-align: right">Total</td>
+                <td class="table-success">Frw {{ cart_subtotal }}</td>
+            </tr>
+            
+        </tfoot>
+</table>
+</p>
+<p>
+     <a href="{% url 'index' %}" class="btn btn-outline-danger">Add anotner ticket?</a>
+                
+                {% if cart_item_count %}
+                    <td><a href="{% url 'checkout' %}" class="btn btn-outline-success">Pay/Checkout</a></td>
+                {% endif %}
+</p>
+{% else %}
+        <p class="text-danger text-center h5">Ticket Cart Empty</p>
+    {% endif %}
+
+{% endblock %}
+
+
